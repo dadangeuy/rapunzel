@@ -14,11 +14,11 @@ import java.util.concurrent.ExecutionException;
 
 @Service
 public class JudgelsService {
-    @Value("${rapunzel.uriel.containerJid}")
+    @Value("${uriel.containerJid}")
     private String containerJid;
-    @Value("${rapunzel.uriel.scoreboardSecret}")
+    @Value("${uriel.scoreboardSecret}")
     private String secret = "adminnyarahadian";
-    @Value("${rapunzel.uriel.scoreboardType}")
+    @Value("${uriel.scoreboardType}")
     private String type;
     private final JophielApiService jophiel;
     private final UrielApiService uriel;

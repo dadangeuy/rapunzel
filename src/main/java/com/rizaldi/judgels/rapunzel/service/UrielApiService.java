@@ -27,11 +27,12 @@ class UrielApiService {
     private static final Logger LOG = LoggerFactory.getLogger(UrielApiService.class);
     private static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
     private static final JsonFactory JSON_FACTORY = new JacksonFactory();
-    @Value("${rapunzel.uriel.host}")
+    @Value("${uriel.host}")
     private String host;
 
     @Cacheable(key = "#containerJid")
     public Contest getContest(String containerJid, String secret, String type) throws IOException {
+        LOG.info("fetch contest data from " + host);
         Map<String, String> data = new HashMap<>();
         data.put("containerJid", containerJid);
         data.put("type", type);
