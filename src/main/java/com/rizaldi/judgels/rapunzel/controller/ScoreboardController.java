@@ -13,9 +13,9 @@ import java.util.concurrent.ExecutionException;
 @Controller
 public class ScoreboardController {
     private final JudgelsService judgels;
-    @Value("${rapunzel.scoreboard.title}")
+    @Value("${rapunzel.title}")
     private String title;
-    @Value("${rapunzel.scoreboard.logos}")
+    @Value("${rapunzel.logos}")
     private String[] logos;
 
     public ScoreboardController(JudgelsService judgels) {
