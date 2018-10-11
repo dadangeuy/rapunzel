@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
@@ -16,8 +15,8 @@ public class ScoreboardController {
     private final JudgelsService judgels;
     @Value("${rapunzel.scoreboard.title}")
     private String title;
-    @Value("${rapunzel.scoreboard.logo}")
-    private String logo;
+    @Value("${rapunzel.scoreboard.logos}")
+    private String[] logos;
 
     public ScoreboardController(JudgelsService judgels) {
         this.judgels = judgels;
@@ -27,7 +26,7 @@ public class ScoreboardController {
     public String scoreboard(Model model) throws IOException, ExecutionException, InterruptedException {
         Scoreboard scoreboard = judgels.getScoreboard();
         model.addAttribute("title", title);
-        model.addAttribute("logo", logo);
+        model.addAttribute("logos", logos);
         model.addAttribute("problemAliases", scoreboard.getState().getProblemAliases());
         model.addAttribute("entries", scoreboard.getContent().getEntries());
         return "ScoreboardPage";
