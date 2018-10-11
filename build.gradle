@@ -38,4 +38,7 @@ dependencies {
     compileOnly('org.projectlombok:lombok')
     providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
     testImplementation('org.springframework.boot:spring-boot-starter-test')
+
+    implementation('com.google.http-client:google-http-client:1.25.0')
+    implementation('com.google.http-client:google-http-client-jackson2:1.25.0')
 }

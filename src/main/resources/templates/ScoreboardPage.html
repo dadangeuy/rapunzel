@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Scoreboard</title>
+    <link rel="stylesheet" media="screen" href="http://cpcompetition-gemastik.its.ac.id/vassets/stylesheets/main.min.css">
+    <script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="jquery" src="http://cpcompetition-gemastik.its.ac.id/assets/lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="jquery-ui" src="http://cpcompetition-gemastik.its.ac.id/assets/lib/jquery-ui/jquery-ui.min.js"></script>
+    <script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="bootstrap" src="http://cpcompetition-gemastik.its.ac.id/assets/lib/bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container-fluid">
+    <header>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="pull-left">
+                        <a href="/">
+                            <img class="logo" th:src="${logo}" alt="Logo">
+                        </a>
+                    </div>
+                    <div class="title pull-left">
+                        <a href="/">
+                            <h1>Public Scoreboard</h1>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main class="container">
+        <div class="row content">
+            <div class="col-md-9" style="width: 100%">
+                <div class="primary-content clearfix">
+                    <div class="col-md-12">
+                        <div class="inline-headers">
+                            <h2 th:text="${title}"></h2>
+                            <div style="float: right; margin: 30px;">
+                            </div>
+                        </div>
+                        <div class="table-responsive" id="tabel">
+                            <table class="table table-bordered table-striped table-condensed scoreboard">
+                                <thead>
+                                <tr>
+                                    <th class="scoreboard-rank">Rank</th>
+                                    <th class="scoreboard-logo">Logo</th>
+                                    <th>Contestant</th>
+                                    <th class="scoreboard-score">Total</th>
+                                    <th th:each="alias : ${problemAliases}" th:text="${alias}" class="scoreboard-score"></th>
+                                </tr>
+                                </thead>
+                                <tbody id="scoreboardPublic">
+                                <tr th:each="entry : ${entries}">
+                                    <td class="scoreboard-rank" th:text="${entry.rank}"></td>
+                                    <td class="scoreboard-logo"><img th:src="${entry.imageURL}" class="scoreboard-logo-image" alt="logo"></td>
+                                    <td><span class="username" th:text="${entry.contestantName}"></span></td>
+                                    <td class="scoreboard-score">
+                                        <div class="scoreboard-icpc-accepted-attempts" th:text="${entry.totalAccepted}"></div>
+                                        <div class="scoreboard-icpc-accepted-penalty" th:text="${entry.totalPenalties}"></div>
+                                    </td>
+                                    <div th:each="attempt, it : ${entry.attemptsList}">
+                                        <td th:if="${entry.problemStateList[it.index]} == 2" class="scoreboard-score scoreboard-icpc-first-accepted">
+                                            <div class="scoreboard-icpc-accepted-attempts" th:text="${attempt}"></div>
+                                            <div class="scoreboard-icpc-accepted-penalty" th:text="${entry.penaltyList[it.index]}"></div>
+                                        </td>
+                                        <td th:if="${entry.problemStateList[it.index]} == 1" class="scoreboard-score scoreboard-icpc-accepted">
+                                            <div class="scoreboard-icpc-accepted-attempts" th:text="${attempt}"></div>
+                                            <div class="scoreboard-icpc-accepted-penalty" th:text="${entry.penaltyList[it.index]}"></div>
+                                        </td>
+                                        <td th:if="${entry.problemStateList[it.index]} == 0 AND ${entry.attemptsList[it.index]} > 0" class="scoreboard-score scoreboard-icpc-not-accepted">
+                                            <div class="scoreboard-icpc-accepted-attempts" th:text="${attempt}"></div>
+                                            <div class="scoreboard-icpc-accepted-penalty">-</div>
+                                        </td>
+                                        <td th:if="${entry.problemStateList[it.index]} == 0 AND ${entry.attemptsList[it.index]} == 0" class="scoreboard-score">
+                                            <div class="scoreboard-icpc-accepted-attempts">-</div>
+                                            <div class="scoreboard-icpc-accepted-penalty">-</div>
+                                        </td>
+                                    </div>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="pull-left first">
+                        <div class="copyright"> © 2018 Judgel</div>
+                    </div>
+                    <div class="pull-right first">
+                        <div class="copyright"> Powered by Judgels Uriel 0.8.4
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+</body>
+</html>
