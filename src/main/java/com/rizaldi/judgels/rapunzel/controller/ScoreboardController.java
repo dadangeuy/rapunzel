@@ -23,7 +23,7 @@ public class ScoreboardController {
         this.judgels = judgels;
     }
 
-    @GetMapping("/")
+    @GetMapping("/scoreboard")
     public String scoreboard(Model model) throws IOException, ExecutionException, InterruptedException {
         Scoreboard scoreboard = judgels.getScoreboard();
         model.addAttribute("title", title);
