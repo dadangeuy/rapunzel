@@ -41,7 +41,8 @@ public class JudgelsService {
         // combine scoreboard & user data
         for (Entry entry : entries) {
             User user = userMap.get(entry.getContestantJid());
-            entry.setContestantName(user.getName());
+            String name = user.getName() == null ? "(hidden name)" : user.getName();
+            entry.setContestantName(name);
         }
         return scoreboard;
     }
