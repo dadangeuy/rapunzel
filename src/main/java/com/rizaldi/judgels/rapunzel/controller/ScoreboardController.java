@@ -4,10 +4,13 @@ import com.rizaldi.judgels.rapunzel.model.Scoreboard;
 import com.rizaldi.judgels.rapunzel.service.JudgelsService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 @Controller
@@ -22,19 +25,26 @@ public class ScoreboardController {
         this.judgels = judgels;
     }
 
+    @GetMapping("/")
+    public RedirectView redirectRoot() {
+        return new RedirectView("/scoreboard");
+    }
+
     @GetMapping("/scoreboard")
-    public String scoreboard(Model model) throws IOException, ExecutionException, InterruptedException {
+    public ModelAndView viewScoreboard() throws IOException, ExecutionException, InterruptedException {
         Scoreboard scoreboard = judgels.getScoreboard();
-        model.addAttribute("title", title);
-        model.addAttribute("logos", logos);
-        model.addAttribute("problemAliases", scoreboard.getState().getProblemAliases());
-        model.addAttribute("entries", scoreboard.getContent().getEntries());
-        return "ScoreboardPage";
+        Map<String, Object> model = new HashMap<>(8);
+        model.put("title", title);
+        model.put("logos", logos);
+        model.put("problemAliases", scoreboard.getState().getProblemAliases());
+        model.put("entries", scoreboard.getContent().getEntries());
+        return new ModelAndView("ScoreboardPage", model);
     }
 
     @GetMapping("/hello")
-    public String hello(Model model) {
-        model.addAttribute("name", "Rapunzel");
-        return "HelloPage";
+    public ModelAndView viewHello() {
+        Map<String, Object> model = new HashMap<>(2);
+        model.put("name", "Rapunzel");
+        return new ModelAndView("HelloPage", model);
     }
 }
