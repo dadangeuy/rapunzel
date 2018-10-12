@@ -9,7 +9,7 @@ To minimalize request traffic, rapunzel use cache, so the scoreboard isn't up to
 ### Build Project
 * `git pull [RAPUNZEL GIT]`
 * `cd [RAPUNZEL DIRECTORY]`
-* `./gradlew build`
+* `./gradlew bootJar`
 
 ### Add Custom Properties
 * `cd build/libs/`
@@ -27,7 +27,7 @@ To minimalize request traffic, rapunzel use cache, so the scoreboard isn't up to
     ```
 
 ### Run Project
-* `java -jar rapunzel-[VERSION].war`
+* `java -jar rapunzel-[VERSION].jar`
 * Open rapunzel in browser, by default the link is `http://localhost:8001`
 
 ## Screenshot
