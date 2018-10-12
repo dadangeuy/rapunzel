@@ -33,7 +33,7 @@ class JophielApiService {
     @Value("${jophiel.host}")
     private String host;
 
-    @Cacheable(key = "#jids.hashCode()")
+    @Cacheable(key = "#jids.hashCode()", sync = true)
     public List<User> getUsers(List<String> jids) throws IOException, ExecutionException, InterruptedException {
         LOG.info("fetch user data from " + host);
         List<Future<HttpResponse>> fHttpResponses = new ArrayList<>(jids.size());

@@ -30,7 +30,7 @@ class UrielApiService {
     @Value("${uriel.host}")
     private String host;
 
-    @Cacheable(key = "#containerJid")
+    @Cacheable(key = "#containerJid", sync = true)
     public Contest getContest(String containerJid, String secret, String type) throws IOException {
         LOG.info("fetch contest data from " + host);
         Map<String, String> data = new HashMap<>();
