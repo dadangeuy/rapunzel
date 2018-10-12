@@ -23,7 +23,7 @@ To minimalize request traffic, rapunzel use cache, so the scoreboard isn't up to
     uriel.scoreboardSecret=[VALUES FROM URIEL application.conf -> uriel.scoreboardSecret]
     uriel.scoreboardType=[SCOREBOARD TYPE (FROZEN OR OFFICIAL)]
     rapunzel.title=[SCOREBOARD TITLE]
-    rapunzel.logos=[LINK TO LOGO_1],[LINK TO LOGO 2],[..ETC]
+    rapunzel.logos=[LINK TO LOGO 1],[LINK TO LOGO 2],[...ETC]
     ```
 
 ### Run Project
@@ -32,3 +32,5 @@ To minimalize request traffic, rapunzel use cache, so the scoreboard isn't up to
 
 ## Screenshot
 ![Scoreboard Penyisihan Gemastik 11](https://image.ibb.co/catfKU/Screenshot-from-2018-10-12-11-48-56.png)
+
+![Rapunzel Image](https://media.giphy.com/media/Ic0krtgPvuLSg/giphy.gif)
