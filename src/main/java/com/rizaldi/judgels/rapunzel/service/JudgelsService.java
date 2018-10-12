@@ -17,7 +17,7 @@ public class JudgelsService {
     @Value("${uriel.containerJid}")
     private String containerJid;
     @Value("${uriel.scoreboardSecret}")
-    private String secret = "adminnyarahadian";
+    private String secret;
     @Value("${uriel.scoreboardType}")
     private String type;
     private final JophielApiService jophiel;
