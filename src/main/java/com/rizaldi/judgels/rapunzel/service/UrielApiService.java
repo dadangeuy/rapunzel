@@ -9,7 +9,7 @@ import com.google.api.client.http.json.JsonHttpContent;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.JsonObjectParser;
 import com.google.api.client.json.jackson2.JacksonFactory;
-import com.rizaldi.judgels.rapunzel.model.Contest;
+import com.rizaldi.judgels.rapunzel.model.ContestScoreboard;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,7 +31,7 @@ class UrielApiService {
     private String host;
 
     @Cacheable(key = "#containerJid", sync = true)
-    public Contest getContest(String containerJid, String secret, String type) throws IOException {
+    public ContestScoreboard getContest(String containerJid, String secret, String type) throws IOException {
         LOG.info("fetch contest data from " + host);
         Map<String, String> data = new HashMap<>();
         data.put("containerJid", containerJid);
@@ -44,6 +44,6 @@ class UrielApiService {
                 .buildPostRequest(api, httpContent)
                 .setParser(new JsonObjectParser(JSON_FACTORY))
                 .execute();
-        return httpResponse.parseAs(Contest.class);
+        return httpResponse.parseAs(ContestScoreboard.class);
     }
 }

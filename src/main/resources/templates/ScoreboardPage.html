@@ -13,13 +13,16 @@
 </head>
 <body>
 
-<nav class="navbar navbar-dark" style="background-color: #013880">
+<nav class="navbar navbar-dark justify-content-between" style="background-color: #013880">
     <a class="navbar-brand" href="/contests">
         <span th:each="logo : ${logos}">
             <img th:src="${logo}" height="30" class="d-inline-block align-top" alt="Logo">
         </span>
         <span th:text="${title}" style="margin-left: 10px"></span>
     </a>
+    <span class="navbar-brand">
+        <small th:text="${lastUpdateTime}"></small>
+    </span>
 </nav>
 
 <table class="table table-striped table-bordered">

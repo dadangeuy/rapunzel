@@ -1,5 +1,6 @@
 package com.rizaldi.judgels.rapunzel.controller;
 
+import com.rizaldi.judgels.rapunzel.model.ContestScoreboard;
 import com.rizaldi.judgels.rapunzel.model.Scoreboard;
 import com.rizaldi.judgels.rapunzel.service.JudgelsService;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,12 +33,14 @@ public class ScoreboardController {
 
     @GetMapping("/scoreboard")
     public ModelAndView viewScoreboard() throws IOException, ExecutionException, InterruptedException {
-        Scoreboard scoreboard = judgels.getScoreboard();
+        ContestScoreboard contestScoreboard = judgels.getContestScoreboard();
+        Scoreboard scoreboard = contestScoreboard.getScoreboard();
         Map<String, Object> model = new HashMap<>(8);
         model.put("title", title);
         model.put("logos", logos);
         model.put("problemAliases", scoreboard.getState().getProblemAliases());
         model.put("entries", scoreboard.getContent().getEntries());
+        model.put("lastUpdateTime", contestScoreboard.getLastUpdateTime());
         return new ModelAndView("ScoreboardPage", model);
     }
 

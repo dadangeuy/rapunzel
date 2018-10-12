@@ -1,5 +1,6 @@
 package com.rizaldi.judgels.rapunzel.service;
 
+import com.rizaldi.judgels.rapunzel.model.ContestScoreboard;
 import com.rizaldi.judgels.rapunzel.model.Entry;
 import com.rizaldi.judgels.rapunzel.model.Scoreboard;
 import com.rizaldi.judgels.rapunzel.model.User;
@@ -28,9 +29,10 @@ public class JudgelsService {
         this.uriel = uriel;
     }
 
-    public Scoreboard getScoreboard() throws IOException, ExecutionException, InterruptedException {
+    public ContestScoreboard getContestScoreboard() throws IOException, ExecutionException, InterruptedException {
         // fetch scoreboard
-        Scoreboard scoreboard = uriel.getContest(containerJid, secret, type).getScoreboard();
+        ContestScoreboard contestScoreboard = uriel.getContest(containerJid, secret, type);
+        Scoreboard scoreboard = contestScoreboard.getScoreboard();
         List<Entry> entries = scoreboard.getContent().getEntries();
 
         // fetch user data
@@ -44,7 +46,7 @@ public class JudgelsService {
             String name = user.getName() == null ? "(hidden name)" : user.getName();
             entry.setContestantName(name);
         }
-        return scoreboard;
+        return contestScoreboard;
     }
 
     private Map<String, User> mapUserByJid(List<User> users) {
