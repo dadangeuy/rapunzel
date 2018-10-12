@@ -3,7 +3,7 @@ Rapunzel is a web-based public scoreboard for judgels programming contest.
 
 Rapunzel is build to minimalize request from public traffic to judgels server, and can be deployed on separate machine.
 
-To minimalize request traffic, rapunzel use cache, so the scoreboard isn't up to date with the real-time contest scoreboard. Contestant submission will be updated every 5 minute, and user data will be updated every 15 minute.
+To minimalize request traffic, rapunzel use cache, so the scoreboard isn't up to date with real-time contest scoreboard. Contestant submission will be updated every 5 minute, and user data will be updated every 15 minute.
 
 ## How To Run
 ### Build Project
@@ -29,3 +29,6 @@ To minimalize request traffic, rapunzel use cache, so the scoreboard isn't up to
 ### Run Project
 * `java -jar rapunzel-[VERSION].war`
 * Open rapunzel in browser, by default the link is `http://localhost:8001`
+
+## Screenshot
+![Scoreboard Penyisihan Gemastik 11](https://image.ibb.co/catfKU/Screenshot-from-2018-10-12-11-48-56.png)
