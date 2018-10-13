@@ -12,8 +12,6 @@ import java.util.Map;
 @Controller
 public class ScoreboardController {
     private final ScoreboardService scoreboard;
-    @Value("${rapunzel.title}")
-    private String title;
     @Value("${rapunzel.logos}")
     private String[] logos;
     @Value("${rapunzel.icon}")
