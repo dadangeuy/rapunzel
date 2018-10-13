@@ -7,8 +7,8 @@ import org.springframework.context.annotation.PropertySources;
 
 @SpringBootApplication
 @PropertySources({
-        @PropertySource("classpath:application.properties"),
-        @PropertySource(value = "file:application.properties", ignoreResourceNotFound = true)
+        @PropertySource(value = "file:/var/rapunzel/application.properties", ignoreResourceNotFound = true),
+        @PropertySource(value = "file:/application.properties", ignoreResourceNotFound = true)
 })
 public class RapunzelApplication {
 
