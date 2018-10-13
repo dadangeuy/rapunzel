@@ -1,29 +1,25 @@
 package com.rizaldi.judgels.rapunzel.controller;
 
-import com.rizaldi.judgels.rapunzel.model.judgels.Contest;
-import com.rizaldi.judgels.rapunzel.model.judgels.Scoreboard;
-import com.rizaldi.judgels.rapunzel.service.JudgelsService;
+import com.rizaldi.judgels.rapunzel.service.ScoreboardService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 @Controller
 public class ScoreboardController {
-    private final JudgelsService judgels;
+    private final ScoreboardService scoreboard;
     @Value("${rapunzel.title}")
     private String title;
     @Value("${rapunzel.logos}")
     private String[] logos;
 
-    public ScoreboardController(JudgelsService judgels) {
-        this.judgels = judgels;
+    public ScoreboardController(ScoreboardService scoreboard) {
+        this.scoreboard = scoreboard;
     }
 
     @GetMapping("/")
@@ -32,22 +28,21 @@ public class ScoreboardController {
     }
 
     @GetMapping("/scoreboard")
-    public ModelAndView viewScoreboard() throws IOException, ExecutionException, InterruptedException {
-        Contest contest = judgels.getContestScoreboard();
-        Scoreboard scoreboard = contest.getScoreboard();
-        Map<String, Object> model = new HashMap<>(8);
-        model.put("title", title);
-        model.put("logos", logos);
-        model.put("problemAliases", scoreboard.getState().getProblemAliases());
-        model.put("entries", scoreboard.getContent().getEntries());
-        model.put("lastUpdateTime", contest.getLastUpdateTime());
-        return new ModelAndView("ScoreboardPage", model);
+    public String viewScoreboard(Model model) throws IOException, ExecutionException, InterruptedException {
+        model.addAttribute("title", title);
+        model.addAttribute("logos", logos);
+
+        model.addAttribute("aliases", scoreboard.getProblemAlias());
+        model.addAttribute("rows", scoreboard.getScoreboardRows());
+        model.addAttribute("lastUpdateTime", scoreboard.getLastUpdateTime());
+
+        return "ScoreboardPage";
     }
 
     @GetMapping("/hello")
-    public ModelAndView viewHello() {
-        Map<String, Object> model = new HashMap<>(2);
-        model.put("name", "Rapunzel");
-        return new ModelAndView("HelloPage", model);
+    public String viewHello(Model model) {
+        model.addAttribute("name", "Rapunzel");
+
+        return "HelloPage";
     }
 }

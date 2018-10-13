@@ -17,9 +17,7 @@ public class ScoreboardRow {
     private int totalPenalty;
     private List<Integer> attempts;
     private List<Integer> penalties;
-
-    private ScoreboardRow() {
-    }
+    private List<Integer> states;
 
     public static ScoreboardRow from(Entry entry, User user) {
         return ScoreboardRow.builder()
@@ -30,6 +28,7 @@ public class ScoreboardRow {
                 .totalPenalty(entry.getTotalPenalties())
                 .attempts(entry.getAttemptsList())
                 .penalties(entry.getPenaltyList())
+                .states(entry.getProblemStateList())
                 .build();
     }
 }
