@@ -5,13 +5,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.servlet.view.RedirectView;
+import org.springframework.web.reactive.result.view.RedirectView;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
 @Controller
 public class ScoreboardController {
+    private final RedirectView rootView = new RedirectView("scoreboard");
     private final ScoreboardService scoreboard;
     @Value("${rapunzel.title}")
     private String title;
@@ -23,8 +24,8 @@ public class ScoreboardController {
     }
 
     @GetMapping("/")
-    public RedirectView redirectRoot() {
-        return new RedirectView("scoreboard");
+    public RedirectView viewRoot() {
+        return rootView;
     }
 
     @GetMapping("/scoreboard")

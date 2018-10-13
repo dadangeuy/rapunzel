@@ -10,14 +10,14 @@ import java.util.List;
 @Builder
 @Data
 public class ScoreboardRow {
-    private int rank;
-    private String logo;
-    private String contestant;
-    private int totalAccepted;
-    private int totalPenalty;
-    private List<Integer> attempts;
-    private List<Integer> penalties;
-    private List<Integer> states;
+    private final int rank;
+    private final String logo;
+    private final String contestant;
+    private final int totalAccepted;
+    private final int totalPenalty;
+    private final List<Integer> attempts;
+    private final List<Integer> penalties;
+    private final List<Integer> states;
 
     public static ScoreboardRow from(Entry entry, User user) {
         return ScoreboardRow.builder()
