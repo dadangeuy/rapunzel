@@ -24,7 +24,7 @@ public class ScoreboardController {
 
     @GetMapping("/")
     public RedirectView redirectRoot() {
-        return new RedirectView("/scoreboard");
+        return new RedirectView("scoreboard");
     }
 
     @GetMapping("/scoreboard")
