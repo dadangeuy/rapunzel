@@ -2,11 +2,11 @@ package com.rizaldi.judgels.rapunzel.service;
 
 import com.rizaldi.judgels.rapunzel.model.ScoreboardRow;
 import com.rizaldi.judgels.rapunzel.model.judgels.Contest;
-import com.rizaldi.judgels.rapunzel.model.judgels.Entry;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.util.Comparator;
 import java.util.List;
@@ -35,13 +35,12 @@ public class ScoreboardService {
 
     public Mono<List<ScoreboardRow>> getScoreboardRowsMono(String contestPath) {
         return uriel.getContestMono(pathJid.get(contestPath), secret, type)
-                .flatMap(contest -> {
-                    Flux<Entry> entryFlux = Flux.fromIterable(contest.getScoreboard().getContent().getEntries());
-                    Flux<ScoreboardRow> scoreboardRowFlux = entryFlux
-                            .flatMap(entry -> jophiel.getUserMono(entry.getContestantJid())
-                                    .map(user -> ScoreboardRow.from(entry, user)));
-                    return scoreboardRowFlux.collectSortedList(Comparator.comparingInt(ScoreboardRow::getRank));
-                });
+                .flatMap(contest -> Flux.fromIterable(contest.getScoreboard().getContent().getEntries())
+                        .parallel()
+                        .runOn(Schedulers.parallel())
+                        .flatMap(entry -> jophiel.getUserMono(entry.getContestantJid())
+                                .map(user -> ScoreboardRow.from(entry, user)))
+                        .collectSortedList(Comparator.comparingInt(ScoreboardRow::getRank)));
     }
 
     public Mono<String> getLastUpdateTimeMono(String contestPath) {
