@@ -12,11 +12,10 @@ To minimalize request traffic, rapunzel use cache, so the scoreboard isn't up to
 * `./gradlew bootJar`
 
 ### Add Custom Properties
-* `cd build/libs/`
 * Create application.properties, and override following variables with your own
   * `nano application.properties`
     ```
-    server.port=[OPTIONAL, DEFAULT VALUE IS 8001]
+    server.port=[OPTIONAL, DEFAULT VALUE IS 8080]
     jophiel.host=[JOPHIEL URL]
     uriel.host=[URIEL URL]
     uriel.containerJid=[VALUES FROM CONTEST JID]
@@ -25,10 +24,13 @@ To minimalize request traffic, rapunzel use cache, so the scoreboard isn't up to
     rapunzel.title=[SCOREBOARD TITLE]
     rapunzel.logos=[LINK TO LOGO 1],[LINK TO LOGO 2],[...ETC]
     ```
+* Put application.properties inside `[RAPUNZEL JAR DIRECTORY]` or `/var/rapunzel/`
+  * `mv application.properties build/libs/` or `mv application.properties /var/rapunzel/`
 
 ### Run Project
+* `cd build/libs`
 * `java -jar rapunzel-[VERSION].jar`
-* Open rapunzel in browser, by default the link is `http://localhost:8001`
+* Open rapunzel in browser, by default the link is `http://localhost:8080`
 
 ## Screenshot
 ![Scoreboard Penyisihan Gemastik 11](https://image.ibb.co/catfKU/Screenshot-from-2018-10-12-11-48-56.png)
