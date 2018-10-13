@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -29,6 +30,7 @@ class UrielApiService {
                 .build();
     }
 
+    @Cacheable(key = "#containerJid", sync = true)
     public Mono<Contest> getContestMono(String containerJid, String secret, String type) {
         Contest.RequestBody body = Contest.RequestBody.builder()
                 .containerJid(containerJid)
@@ -41,6 +43,7 @@ class UrielApiService {
                 .syncBody(body)
                 .retrieve()
                 .bodyToMono(String.class)
-                .map(json -> new Gson().fromJson(json, Contest.class));
+                .map(json -> new Gson().fromJson(json, Contest.class))
+                .cache();
     }
 }
