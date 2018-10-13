@@ -37,7 +37,7 @@ public class ScoreboardService {
         return uriel.getContestMono(pathJid.get(contestPath), secret, type)
                 .flatMap(contest -> Flux.fromIterable(contest.getScoreboard().getContent().getEntries())
                         .parallel()
-                        .runOn(Schedulers.parallel())
+                        .runOn(Schedulers.elastic())
                         .flatMap(entry -> jophiel.getUserMono(entry.getContestantJid())
                                 .map(user -> ScoreboardRow.from(entry, user)))
                         .collectSortedList(Comparator.comparingInt(ScoreboardRow::getRank)));
