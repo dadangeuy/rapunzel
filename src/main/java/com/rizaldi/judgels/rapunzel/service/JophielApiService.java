@@ -16,6 +16,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
@@ -63,13 +64,20 @@ class JophielApiService {
         return users;
     }
 
-    public Flux<User> getUsersFlux(List<String> jids) {
+    public Flux<User> getUserFlux(List<String> jids) {
         Flux<String> jidFlux = Flux.fromIterable(jids);
         return jidFlux.flatMap(jid ->
                 client.get()
-                        .uri("/api/v1/users" + jid)
+                        .uri("/api/v1/users/" + jid)
                         .retrieve()
                         .bodyToMono(User.class)
         );
+    }
+
+    public Mono<User> getUserMono(String jid) {
+        return client.get()
+                .uri("/api/v1/users/" + jid)
+                .retrieve()
+                .bodyToMono(User.class);
     }
 }

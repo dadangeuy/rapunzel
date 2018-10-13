@@ -6,13 +6,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.reactive.result.view.RedirectView;
-
-import java.io.IOException;
-import java.util.concurrent.ExecutionException;
+import org.springframework.web.reactive.result.view.View;
 
 @Controller
 public class ScoreboardController {
-    private final RedirectView rootView = new RedirectView("scoreboard");
     private final ScoreboardService scoreboard;
     @Value("${rapunzel.title}")
     private String title;
@@ -24,17 +21,17 @@ public class ScoreboardController {
     }
 
     @GetMapping("/")
-    public RedirectView viewRoot() {
-        return rootView;
+    public View viewRoot() {
+        return new RedirectView("scoreboard");
     }
 
     @GetMapping("/scoreboard")
-    public String viewScoreboard(Model model) throws IOException, ExecutionException, InterruptedException {
+    public String viewScoreboard(Model model) {
         model.addAttribute("title", title);
         model.addAttribute("logos", logos);
 
         model.addAttribute("aliases", scoreboard.getProblemAliasMono());
-        model.addAttribute("rows", scoreboard.getScoreboardRows());
+        model.addAttribute("rows", scoreboard.getScoreboardRowsMono());
         model.addAttribute("lastUpdateTime", scoreboard.getLastUpdateTimeMono());
 
         return "ScoreboardPage";
