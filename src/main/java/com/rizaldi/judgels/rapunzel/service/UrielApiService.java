@@ -9,6 +9,7 @@ import com.google.api.client.http.json.JsonHttpContent;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.JsonObjectParser;
 import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.gson.Gson;
 import com.rizaldi.judgels.rapunzel.model.judgels.Contest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +17,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,8 +31,14 @@ class UrielApiService {
     private static final Logger LOG = LoggerFactory.getLogger(UrielApiService.class);
     private static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
     private static final JsonFactory JSON_FACTORY = new JacksonFactory();
+    private WebClient client;
     @Value("${uriel.host}")
     private String host;
+
+    @PostConstruct
+    private void construct() {
+        client = WebClient.create(host);
+    }
 
     @Cacheable(key = "#containerJid", sync = true)
     public Contest getContest(String containerJid, String secret, String type) throws IOException {
@@ -45,5 +55,20 @@ class UrielApiService {
                 .setParser(new JsonObjectParser(JSON_FACTORY))
                 .execute();
         return httpResponse.parseAs(Contest.class);
+    }
+
+    public Mono<Contest> getContestMono(String containerJid, String secret, String type) {
+        Contest.RequestBody body = Contest.RequestBody.builder()
+                .containerJid(containerJid)
+                .secret(secret)
+                .type(type)
+                .build();
+
+        return client.post()
+                .uri("/apis/scoreboards")
+                .syncBody(body)
+                .retrieve()
+                .bodyToMono(String.class)
+                .map(json -> new Gson().fromJson(json, Contest.class));
     }
 }

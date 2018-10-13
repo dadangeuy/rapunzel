@@ -14,7 +14,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +33,14 @@ class JophielApiService {
     private static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
     private static final JsonFactory JSON_FACTORY = new JacksonFactory();
     private static final Executor requestExecutor = Executors.newFixedThreadPool(32);
+    private WebClient client;
     @Value("${jophiel.host}")
     private String host;
+
+    @PostConstruct
+    private void construct() {
+        client = WebClient.create(host);
+    }
 
     @Cacheable(key = "#jids.hashCode()", sync = true)
     public List<User> getUsers(List<String> jids) throws IOException, ExecutionException, InterruptedException {
@@ -52,5 +61,15 @@ class JophielApiService {
             users.add(user);
         }
         return users;
+    }
+
+    public Flux<User> getUsersFlux(List<String> jids) {
+        Flux<String> jidFlux = Flux.fromIterable(jids);
+        return jidFlux.flatMap(jid ->
+                client.get()
+                        .uri("/api/v1/users" + jid)
+                        .retrieve()
+                        .bodyToMono(User.class)
+        );
     }
 }
