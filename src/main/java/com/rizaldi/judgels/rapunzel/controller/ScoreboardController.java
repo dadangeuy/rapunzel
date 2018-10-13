@@ -7,6 +7,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.Map;
+
 @Controller
 public class ScoreboardController {
     private final ScoreboardService scoreboard;
@@ -18,6 +20,8 @@ public class ScoreboardController {
     private String icon;
     @Value("${uriel.defaultPath}")
     private String defaultPath;
+    @Value("#{${uriel.pathTitle}}")
+    private Map<String, String> pathTitle;
     @Value("${uriel.host}")
     private String urielHost;
 
@@ -32,7 +36,7 @@ public class ScoreboardController {
 
     @GetMapping("/scoreboard/{contestPath}")
     public String viewScoreboard(Model model, @PathVariable String contestPath) {
-        model.addAttribute("title", title);
+        model.addAttribute("title", pathTitle.get(contestPath));
         model.addAttribute("logos", logos);
         model.addAttribute("icon", icon);
         model.addAttribute("host", urielHost);
