@@ -33,9 +33,9 @@ public class ScoreboardController {
         model.addAttribute("title", title);
         model.addAttribute("logos", logos);
 
-        model.addAttribute("aliases", scoreboard.getProblemAlias());
+        model.addAttribute("aliases", scoreboard.getProblemAliasMono());
         model.addAttribute("rows", scoreboard.getScoreboardRows());
-        model.addAttribute("lastUpdateTime", scoreboard.getLastUpdateTime());
+        model.addAttribute("lastUpdateTime", scoreboard.getLastUpdateTimeMono());
 
         return "ScoreboardPage";
     }

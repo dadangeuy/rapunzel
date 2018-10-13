@@ -7,6 +7,7 @@ import com.rizaldi.judgels.rapunzel.model.judgels.Scoreboard;
 import com.rizaldi.judgels.rapunzel.model.judgels.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -59,6 +60,11 @@ public class ScoreboardService {
                 .getProblemAliases();
     }
 
+    public Mono<List<String>> getProblemAliasMono() {
+        return uriel.getContestMono(containerJid, secret, type)
+                .map(contest -> contest.getScoreboard().getState().getProblemAliases());
+    }
+
     public List<ScoreboardRow> getScoreboardRows() throws IOException, ExecutionException, InterruptedException {
         Contest contest = uriel.getContest(containerJid, secret, type);
 
@@ -79,6 +85,11 @@ public class ScoreboardService {
     public String getLastUpdateTime() throws IOException {
         return uriel.getContest(containerJid, secret, type)
                 .getLastUpdateTime();
+    }
+
+    public Mono<String> getLastUpdateTimeMono() {
+        return uriel.getContestMono(containerJid, secret, type)
+                .map(Contest::getLastUpdateTime);
     }
 
     private Map<String, User> mapUserByJid(List<User> users) {
