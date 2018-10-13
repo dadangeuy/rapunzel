@@ -1,10 +1,10 @@
-package com.rizaldi.judgels.rapunzel.model;
+package com.rizaldi.judgels.rapunzel.model.judgels;
 
 import com.google.api.client.util.Key;
 import lombok.Data;
 
 @Data
-public class ContestScoreboard {
+public class Contest {
     @Key
     private int id;
     @Key

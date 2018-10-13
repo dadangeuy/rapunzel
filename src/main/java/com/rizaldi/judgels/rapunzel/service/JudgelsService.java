@@ -1,9 +1,9 @@
 package com.rizaldi.judgels.rapunzel.service;
 
-import com.rizaldi.judgels.rapunzel.model.ContestScoreboard;
-import com.rizaldi.judgels.rapunzel.model.Entry;
-import com.rizaldi.judgels.rapunzel.model.Scoreboard;
-import com.rizaldi.judgels.rapunzel.model.User;
+import com.rizaldi.judgels.rapunzel.model.judgels.Contest;
+import com.rizaldi.judgels.rapunzel.model.judgels.Entry;
+import com.rizaldi.judgels.rapunzel.model.judgels.Scoreboard;
+import com.rizaldi.judgels.rapunzel.model.judgels.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -29,10 +29,10 @@ public class JudgelsService {
         this.uriel = uriel;
     }
 
-    public ContestScoreboard getContestScoreboard() throws IOException, ExecutionException, InterruptedException {
+    public Contest getContestScoreboard() throws IOException, ExecutionException, InterruptedException {
         // fetch scoreboard
-        ContestScoreboard contestScoreboard = uriel.getContest(containerJid, secret, type);
-        Scoreboard scoreboard = contestScoreboard.getScoreboard();
+        Contest contest = uriel.getContest(containerJid, secret, type);
+        Scoreboard scoreboard = contest.getScoreboard();
         List<Entry> entries = scoreboard.getContent().getEntries();
 
         // fetch user data
@@ -46,7 +46,7 @@ public class JudgelsService {
             String name = user.getName() == null ? "(hidden name)" : user.getName();
             entry.setContestantName(name);
         }
-        return contestScoreboard;
+        return contest;
     }
 
     private Map<String, User> mapUserByJid(List<User> users) {
