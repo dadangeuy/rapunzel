@@ -5,8 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.reactive.result.view.RedirectView;
-import org.springframework.web.reactive.result.view.View;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class ScoreboardController {
@@ -15,24 +14,32 @@ public class ScoreboardController {
     private String title;
     @Value("${rapunzel.logos}")
     private String[] logos;
+    @Value("${rapunzel.icon}")
+    private String icon;
+    @Value("${uriel.defaultPath}")
+    private String defaultPath;
+    @Value("${uriel.host}")
+    private String urielHost;
 
     public ScoreboardController(ScoreboardService scoreboard) {
         this.scoreboard = scoreboard;
     }
 
-    @GetMapping("/")
-    public View viewRoot() {
-        return new RedirectView("scoreboard");
+    @GetMapping({"/", "/scoreboard"})
+    public String viewRoot() {
+        return "redirect:/scoreboard/" + defaultPath;
     }
 
-    @GetMapping("/scoreboard")
-    public String viewScoreboard(Model model) {
+    @GetMapping("/scoreboard/{contestPath}")
+    public String viewScoreboard(Model model, @PathVariable String contestPath) {
         model.addAttribute("title", title);
         model.addAttribute("logos", logos);
+        model.addAttribute("icon", icon);
+        model.addAttribute("host", urielHost);
 
-        model.addAttribute("aliases", scoreboard.getProblemAliasMono());
-        model.addAttribute("rows", scoreboard.getScoreboardRowsMono());
-        model.addAttribute("lastUpdateTime", scoreboard.getLastUpdateTimeMono());
+        model.addAttribute("aliases", scoreboard.getProblemAliasMono(contestPath));
+        model.addAttribute("rows", scoreboard.getScoreboardRowsMono(contestPath));
+        model.addAttribute("lastUpdateTime", scoreboard.getLastUpdateTimeMono(contestPath));
 
         return "ScoreboardPage";
     }

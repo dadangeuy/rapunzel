@@ -10,13 +10,14 @@ import reactor.core.publisher.Mono;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ScoreboardService {
     private final JophielApiService jophiel;
     private final UrielApiService uriel;
-    @Value("${uriel.containerJid}")
-    private String containerJid;
+    @Value("#{${uriel.pathJid}}")
+    private Map<String, String> pathJid;
     @Value("${uriel.scoreboardSecret}")
     private String secret;
     @Value("${uriel.scoreboardType}")
@@ -27,13 +28,13 @@ public class ScoreboardService {
         this.uriel = uriel;
     }
 
-    public Mono<List<String>> getProblemAliasMono() {
-        return uriel.getContestMono(containerJid, secret, type)
+    public Mono<List<String>> getProblemAliasMono(String contestPath) {
+        return uriel.getContestMono(pathJid.get(contestPath), secret, type)
                 .map(contest -> contest.getScoreboard().getState().getProblemAliases());
     }
 
-    public Mono<List<ScoreboardRow>> getScoreboardRowsMono() {
-        return uriel.getContestMono(containerJid, secret, type)
+    public Mono<List<ScoreboardRow>> getScoreboardRowsMono(String contestPath) {
+        return uriel.getContestMono(pathJid.get(contestPath), secret, type)
                 .flatMap(contest -> {
                     Flux<Entry> entryFlux = Flux.fromIterable(contest.getScoreboard().getContent().getEntries());
                     Flux<ScoreboardRow> scoreboardRowFlux = entryFlux
@@ -43,8 +44,8 @@ public class ScoreboardService {
                 });
     }
 
-    public Mono<String> getLastUpdateTimeMono() {
-        return uriel.getContestMono(containerJid, secret, type)
+    public Mono<String> getLastUpdateTimeMono(String contestPath) {
+        return uriel.getContestMono(pathJid.get(contestPath), secret, type)
                 .map(Contest::getLastUpdateTime);
     }
 }
