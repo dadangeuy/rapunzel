@@ -35,7 +35,8 @@ public class ScoreboardService {
 
     public Mono<List<ScoreboardRow>> getScoreboardRowsMono(String contestPath) {
         return uriel.getContestMono(pathJid.get(contestPath), secret, type)
-                .flatMap(contest -> Flux.fromIterable(contest.getScoreboard().getContent().getEntries())
+                .map(contest -> contest.getScoreboard().getContent().getEntries())
+                .flatMap(entries -> Flux.fromIterable(entries)
                         .parallel()
                         .runOn(Schedulers.elastic())
                         .flatMap(entry -> jophiel.getUserMono(entry.getContestantJid())

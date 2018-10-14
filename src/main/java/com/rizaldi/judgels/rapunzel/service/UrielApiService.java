@@ -18,6 +18,7 @@ import javax.annotation.PostConstruct;
 @CacheConfig(cacheNames = "uriel")
 class UrielApiService {
     private static final Logger LOG = LoggerFactory.getLogger(UrielApiService.class);
+    private static final Gson GSON = new Gson();
     private WebClient client;
     @Value("${uriel.host}")
     private String host;
@@ -43,7 +44,7 @@ class UrielApiService {
                 .syncBody(body)
                 .retrieve()
                 .bodyToMono(String.class)
-                .map(json -> new Gson().fromJson(json, Contest.class))
+                .map(json -> GSON.fromJson(json, Contest.class))
                 .cache();
     }
 }
