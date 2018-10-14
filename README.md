@@ -16,28 +16,36 @@ To minimalize request traffic, rapunzel use cache, so the scoreboard isn't up to
   * `nano application.properties`
     ```
     server.port=[OPTIONAL, DEFAULT VALUE IS 8080]
-    jophiel.host=[JOPHIEL URL]
-    uriel.host=[URIEL URL]
-    uriel.pathJid=[PATH TO CONTEST MAPPER IN JSON FORMAT]
-    uriel.pathTitle=[PATH TO PAGE TITLE IN JSON FORMAT]
-    uriel.defaultPath=[DEFAULT PATH]
-    uriel.containerJid=[VALUES FROM CONTEST JID]
-    uriel.scoreboardSecret=[VALUES FROM URIEL application.conf -> uriel.scoreboardSecret]
-    uriel.scoreboardType=[SCOREBOARD TYPE (FROZEN OR OFFICIAL)]
-    rapunzel.logos=[LINK TO LOGO 1],[LINK TO LOGO 2],[...ETC]
-    rapunzel.icon=[LINK TO ICON]
+    
+    judgels.jophiel.host=[JOPHIEL URL]
+    judgels.uriel.host=[URIEL URL]
+    judgels.uriel.scoreboardSecret=[VALUES FROM URIEL application.conf -> uriel.scoreboardSecret]
+    
+    rapunzel.scoreboard.paths=[LIST OF DESIRED SCOREBOARD URL]
+    rapunzel.scoreboard.jids=[LIST OF CONTEST JID (from uriel)]
+    rapunzel.scoreboard.titles=[LIST OF CONTEST TITLE]
+    rapunzel.scoreboard.types=[LIST OF SCOREBOARD TYPE (FROZEN or OFFICIAL)]
+    rapunzel.scoreboard.defaultPath=[DEFAULT PATH]
+    
+    rapunzel.web.logos=[LIST OF LOGO SHOWN IN SCOREBOARD HEADER]
+    rapunzel.icon=[WEB ICON]
     ```
   * example properties:
     ```
-    jophiel.host=http://cpsso-gemastik.its.ac.id/
-    uriel.host=http://cpcompetition-gemastik.its.ac.id/
-    uriel.pathJid={ujicoba:'JIDCONT123',penyisihan:'JIDCONT456'}
-    uriel.pathTitle={ujicoba:'Uji Coba Lomba Pemrograman',penyisihan:'Penyisihan Lomba Pemrograman - Gemastik 11'}
-    uriel.defaultPath=penyisihan
-    uriel.scoreboardSecret=RaHaSiAdOnG
-    uriel.scoreboardType=FROZEN
-    rapunzel.logos=https://arek.its.ac.id/gemastik/images/ristekdikti.png,https://arek.its.ac.id/gemastik/images/logo-its-putih-transparan.png,https://arek.its.ac.id/gemastik/images/gemastikwhite@3x.png
-    rapunzel.icon=https://arek.its.ac.id/gemastik/images/gemastik.png
+    server.port=14045
+    
+    judgels.jophiel.host=http://cpsso-gemastik.its.ac.id/
+    judgels.uriel.host=http://cpcompetition-gemastik.its.ac.id/
+    judgels.uriel.scoreboardSecret=rahasia-dong
+
+    rapunzel.scoreboard.paths=ujicoba,penyisihan
+    rapunzel.scoreboard.jids=JIDCONT001,JIDCONT002
+    rapunzel.scoreboard.titles=Uji Coba Lomba Pemrograman,Penyisihan Lomba Pemrograman - Gemastik 11
+    rapunzel.scoreboard.types=FROZEN,FROZEN
+    rapunzel.scoreboard.defaultPath=penyisihan
+
+    rapunzel.web.logos=https://arek.its.ac.id/gemastik/images/ristekdikti.png,https://arek.its.ac.id/gemastik/images/logo-its-putih-transparan.png,https://arek.its.ac.id/gemastik/images/gemastikwhite@3x.png
+    rapunzel.web.icon=https://arek.its.ac.id/gemastik/images/gemastik.png
     ```
 * Put application.properties inside `[RAPUNZEL JAR DIRECTORY]` or `/var/rapunzel/`
   * `mv application.properties build/libs/` or `mv application.properties /var/rapunzel/`
