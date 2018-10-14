@@ -1,6 +1,6 @@
 package com.rizaldi.judgels.rapunzel.service;
 
-import com.rizaldi.judgels.rapunzel.config.JudgelsConfig;
+import com.rizaldi.judgels.rapunzel.config.JophielConfig;
 import com.rizaldi.judgels.rapunzel.model.judgels.User;
 import com.rizaldi.judgels.rapunzel.util.WebClientUtil;
 import org.slf4j.Logger;
@@ -17,9 +17,9 @@ class JophielApiService {
     private static final Logger LOG = LoggerFactory.getLogger(JophielApiService.class);
     private final WebClient client;
 
-    public JophielApiService(JudgelsConfig config) {
+    public JophielApiService(JophielConfig config) {
         client = WebClient.builder()
-                .baseUrl(config.getJophiel().getHost())
+                .baseUrl(config.getHost())
                 .filter(WebClientUtil.logRequest(LOG))
                 .build();
     }

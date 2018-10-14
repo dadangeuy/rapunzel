@@ -1,7 +1,7 @@
 package com.rizaldi.judgels.rapunzel.service;
 
 import com.google.gson.Gson;
-import com.rizaldi.judgels.rapunzel.config.JudgelsConfig;
+import com.rizaldi.judgels.rapunzel.config.UrielConfig;
 import com.rizaldi.judgels.rapunzel.model.judgels.Contest;
 import com.rizaldi.judgels.rapunzel.util.WebClientUtil;
 import org.slf4j.Logger;
@@ -19,13 +19,13 @@ import javax.annotation.PostConstruct;
 class UrielApiService {
     private static final Logger LOG = LoggerFactory.getLogger(UrielApiService.class);
     private static final Gson GSON = new Gson();
-    private final JudgelsConfig config;
+    private final UrielConfig config;
     private final WebClient client;
 
-    UrielApiService(JudgelsConfig config) {
+    UrielApiService(UrielConfig config) {
         this.config = config;
         client = WebClient.builder()
-                .baseUrl(config.getUriel().getHost())
+                .baseUrl(config.getHost())
                 .filter(WebClientUtil.logRequest(LOG))
                 .build();
     }
@@ -38,7 +38,7 @@ class UrielApiService {
     public Mono<Contest> getContestMono(String containerJid, String type) {
         Contest.RequestBody body = Contest.RequestBody.builder()
                 .containerJid(containerJid)
-                .secret(config.getUriel().getScoreboardSecret())
+                .secret(config.getScoreboardSecret())
                 .type(type)
                 .build();
 
