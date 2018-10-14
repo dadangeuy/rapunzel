@@ -1,43 +1,39 @@
 package com.rizaldi.judgels.rapunzel.controller;
 
+import com.rizaldi.judgels.rapunzel.config.JudgelsConfig;
+import com.rizaldi.judgels.rapunzel.config.ScoreboardConfig;
+import com.rizaldi.judgels.rapunzel.config.WebConfig;
 import com.rizaldi.judgels.rapunzel.service.ScoreboardService;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import java.util.Map;
-
 @Controller
 public class ScoreboardController {
+    private final WebConfig webConfig;
+    private final ScoreboardConfig scoreboardConfig;
+    private final JudgelsConfig judgelsConfig;
     private final ScoreboardService scoreboard;
-    @Value("${rapunzel.logos}")
-    private String[] logos;
-    @Value("${rapunzel.icon}")
-    private String icon;
-    @Value("${uriel.defaultPath}")
-    private String defaultPath;
-    @Value("#{${uriel.pathTitle}}")
-    private Map<String, String> pathTitle;
-    @Value("${uriel.host}")
-    private String urielHost;
 
-    public ScoreboardController(ScoreboardService scoreboard) {
+    public ScoreboardController(WebConfig webConfig, ScoreboardConfig scoreboardConfig, JudgelsConfig judgelsConfig, ScoreboardService scoreboard) {
+        this.webConfig = webConfig;
+        this.scoreboardConfig = scoreboardConfig;
+        this.judgelsConfig = judgelsConfig;
         this.scoreboard = scoreboard;
     }
 
     @GetMapping({"/", "/scoreboard"})
     public String viewRoot() {
-        return "redirect:/scoreboard/" + defaultPath;
+        return "redirect:/scoreboard/" + scoreboardConfig.getDefaultPath();
     }
 
     @GetMapping("/scoreboard/{contestPath}")
     public String viewScoreboard(Model model, @PathVariable String contestPath) {
-        model.addAttribute("title", pathTitle.get(contestPath));
-        model.addAttribute("logos", logos);
-        model.addAttribute("icon", icon);
-        model.addAttribute("host", urielHost);
+        model.addAttribute("logos", webConfig.getLogos());
+        model.addAttribute("icon", webConfig.getIcon());
+        model.addAttribute("title", scoreboardConfig.getTitle(contestPath));
+        model.addAttribute("host", judgelsConfig.getUriel().getHost());
 
         model.addAttribute("aliases", scoreboard.getProblemAliasMono(contestPath));
         model.addAttribute("rows", scoreboard.getScoreboardRowsMono(contestPath));

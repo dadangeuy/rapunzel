@@ -1,11 +1,11 @@
 package com.rizaldi.judgels.rapunzel.service;
 
 import com.google.gson.Gson;
+import com.rizaldi.judgels.rapunzel.config.JudgelsConfig;
 import com.rizaldi.judgels.rapunzel.model.judgels.Contest;
 import com.rizaldi.judgels.rapunzel.util.WebClientUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -19,23 +19,26 @@ import javax.annotation.PostConstruct;
 class UrielApiService {
     private static final Logger LOG = LoggerFactory.getLogger(UrielApiService.class);
     private static final Gson GSON = new Gson();
-    private WebClient client;
-    @Value("${uriel.host}")
-    private String host;
+    private final JudgelsConfig config;
+    private final WebClient client;
 
-    @PostConstruct
-    private void construct() {
+    UrielApiService(JudgelsConfig config) {
+        this.config = config;
         client = WebClient.builder()
-                .baseUrl(host)
+                .baseUrl(config.getUriel().getHost())
                 .filter(WebClientUtil.logRequest(LOG))
                 .build();
     }
 
+    @PostConstruct
+    private void construct() {
+    }
+
     @Cacheable(key = "#containerJid", sync = true)
-    public Mono<Contest> getContestMono(String containerJid, String secret, String type) {
+    public Mono<Contest> getContestMono(String containerJid, String type) {
         Contest.RequestBody body = Contest.RequestBody.builder()
                 .containerJid(containerJid)
-                .secret(secret)
+                .secret(config.getUriel().getScoreboardSecret())
                 .type(type)
                 .build();
 
