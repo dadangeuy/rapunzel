@@ -27,7 +27,7 @@ class UrielApiService {
     private void construct() {
         client = WebClient.builder()
                 .baseUrl(host)
-                .filter(WebClientUtil.logFilter(LOG))
+                .filter(WebClientUtil.logRequest(LOG))
                 .build();
     }
 

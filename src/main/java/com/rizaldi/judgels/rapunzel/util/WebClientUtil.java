@@ -6,7 +6,7 @@ import reactor.core.publisher.Mono;
 
 public final class WebClientUtil {
 
-    public static ExchangeFilterFunction logFilter(Logger log) {
+    public static ExchangeFilterFunction logRequest(Logger log) {
         return ExchangeFilterFunction.ofRequestProcessor(request -> {
             log.info("Request: {} {}", request.method(), request.url());
             return Mono.just(request);
