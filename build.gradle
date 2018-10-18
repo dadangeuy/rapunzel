@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = '2.0.5.RELEASE'
+        springBootVersion = '2.0.6.RELEASE'
     }
     repositories {
         mavenCentral()
@@ -28,18 +28,10 @@ dependencies {
     implementation('org.springframework.boot:spring-boot-starter-actuator')
     implementation('org.springframework.boot:spring-boot-starter-cache')
     implementation('org.springframework.boot:spring-boot-starter-thymeleaf')
-    implementation('org.springframework.boot:spring-boot-starter-webflux') {
-        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
-    }
-    implementation('org.springframework.boot:spring-boot-starter-jetty')
+    implementation('org.springframework.boot:spring-boot-starter-webflux')
     implementation('org.ehcache:ehcache:3.0.0')
     implementation('javax.cache:cache-api:1.1.0')
     implementation('com.google.code.gson:gson:2.8.5')
-
-    // Fix for Class Not Defined Exception
-    implementation('javax.xml.bind:jaxb-api:2.3.0')
-    implementation('javax.activation:activation:1.1')
-    implementation('org.glassfish.jaxb:jaxb-runtime:2.3.0')
 
     // Development
     runtimeOnly('org.springframework.boot:spring-boot-devtools')
