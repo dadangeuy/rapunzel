@@ -6,7 +6,6 @@ import com.rizaldi.judgels.rapunzel.model.judgels.Contest;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 import java.util.Comparator;
 import java.util.List;
@@ -32,8 +31,6 @@ public class ScoreboardService {
         return uriel.getContestMono(config.getJid(contestPath), config.getType(contestPath))
                 .map(contest -> contest.getScoreboard().getContent().getEntries())
                 .flatMap(entries -> Flux.fromIterable(entries)
-                        .parallel()
-                        .runOn(Schedulers.elastic())
                         .flatMap(entry -> jophiel.getUserMono(entry.getContestantJid())
                                 .map(user -> ScoreboardRow.from(entry, user)))
                         .collectSortedList(Comparator.comparingInt(ScoreboardRow::getRank)));
