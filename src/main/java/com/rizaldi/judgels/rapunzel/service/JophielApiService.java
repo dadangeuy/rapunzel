@@ -21,6 +21,7 @@ class JophielApiService {
         client = WebClient.builder()
                 .baseUrl(config.getHost())
                 .filter(WebClientUtil.logRequest(LOG))
+                .filter(WebClientUtil.logResponse(LOG))
                 .build();
     }
 

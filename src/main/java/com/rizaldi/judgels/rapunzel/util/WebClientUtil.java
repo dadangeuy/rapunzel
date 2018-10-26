@@ -12,4 +12,11 @@ public final class WebClientUtil {
             return Mono.just(request);
         });
     }
+
+    public static ExchangeFilterFunction logResponse(Logger log) {
+        return ExchangeFilterFunction.ofResponseProcessor(response -> {
+            log.info("Response: {}", response.statusCode(), response);
+            return Mono.just(response);
+        });
+    }
 }
