@@ -1,46 +1,41 @@
 package com.rizaldi.judgels.rapunzel.service;
 
+import com.google.api.client.http.GenericUrl;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.JsonObjectParser;
+import com.google.api.client.json.gson.GsonFactory;
 import com.rizaldi.judgels.rapunzel.config.JophielConfig;
 import com.rizaldi.judgels.rapunzel.model.judgels.User;
-import com.rizaldi.judgels.rapunzel.util.WebClientUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
+
+import java.io.IOException;
 
 @Service
 @CacheConfig(cacheNames = "jophiel")
 class JophielApiService {
     private static final Logger LOG = LoggerFactory.getLogger(JophielApiService.class);
-    private final WebClient client;
+    private static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
+    private static final JsonFactory JSON_FACTORY = new GsonFactory();
+    private final String host;
 
     public JophielApiService(JophielConfig config) {
-        client = WebClient.builder()
-                .baseUrl(config.getHost())
-                .filter(WebClientUtil.logRequest(LOG))
-                .filter(WebClientUtil.logResponse(LOG))
-                .build();
-    }
-
-    @Deprecated
-    @Cacheable(key = "'mono-' + #jid", sync = true)
-    public Mono<User> getUserMono(String jid) {
-        return client.get()
-                .uri("/api/v1/users/" + jid)
-                .retrieve()
-                .bodyToMono(User.class)
-                .cache();
+        host = config.getHost();
     }
 
     @Cacheable(key = "#jid", sync = true)
-    public User getUser(String jid) {
-        return client.get()
-                .uri("/api/v1/users/" + jid)
-                .retrieve()
-                .bodyToMono(User.class)
-                .block();
+    public User getUser(String jid) throws IOException {
+        GenericUrl api = new GenericUrl(host + "api/v1/users/" + jid);
+        LOG.info("Request: GET {}", api.toString());
+        return HTTP_TRANSPORT.createRequestFactory()
+                .buildGetRequest(api)
+                .setParser(new JsonObjectParser(JSON_FACTORY))
+                .execute()
+                .parseAs(User.class);
     }
 }

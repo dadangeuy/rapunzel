@@ -9,6 +9,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.io.IOException;
+import java.util.concurrent.ExecutionException;
+
 @Controller
 public class ScoreboardController {
     private final WebConfig webConfig;
@@ -29,15 +32,15 @@ public class ScoreboardController {
     }
 
     @GetMapping("/scoreboard/{contestPath}")
-    public String viewScoreboard(Model model, @PathVariable String contestPath) {
+    public String viewScoreboard(Model model, @PathVariable String contestPath) throws IOException, ExecutionException, InterruptedException {
         model.addAttribute("logos", webConfig.getLogos());
         model.addAttribute("icon", webConfig.getIcon());
         model.addAttribute("title", scoreboardConfig.getTitle(contestPath));
         model.addAttribute("host", urielConfig.getHost());
 
-        model.addAttribute("aliases", scoreboard.getProblemAliasMono(contestPath));
-        model.addAttribute("rows", scoreboard.getScoreboardRowsMono(contestPath));
-        model.addAttribute("lastUpdateTime", scoreboard.getLastUpdateTimeMono(contestPath));
+        model.addAttribute("aliases", scoreboard.getProblemAlias(contestPath));
+        model.addAttribute("rows", scoreboard.getScoreboardRows(contestPath));
+        model.addAttribute("lastUpdateTime", scoreboard.getLastUpdateTime(contestPath));
 
         return "ScoreboardPage";
     }
