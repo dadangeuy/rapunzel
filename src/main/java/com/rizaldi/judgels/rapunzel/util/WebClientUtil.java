@@ -1,6 +1,7 @@
 package com.rizaldi.judgels.rapunzel.util;
 
 import org.slf4j.Logger;
+import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import reactor.core.publisher.Mono;
 
@@ -15,7 +16,11 @@ public final class WebClientUtil {
 
     public static ExchangeFilterFunction logResponse(Logger log) {
         return ExchangeFilterFunction.ofResponseProcessor(response -> {
-            log.info("Response: {}", response.statusCode(), response);
+            log.info("Response: {} {}",
+                    response.statusCode(),
+                    response.headers()
+                            .contentType().orElse(MediaType.ALL)
+                            .getType());
             return Mono.just(response);
         });
     }
