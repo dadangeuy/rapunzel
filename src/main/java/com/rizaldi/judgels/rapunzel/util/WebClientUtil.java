@@ -16,11 +16,12 @@ public final class WebClientUtil {
 
     public static ExchangeFilterFunction logResponse(Logger log) {
         return ExchangeFilterFunction.ofResponseProcessor(response -> {
-            log.info("Response: {} {}",
+            MediaType type = response.headers()
+                    .contentType().orElse(MediaType.ALL);
+            log.info("Response: {} {}/{}",
                     response.statusCode(),
-                    response.headers()
-                            .contentType().orElse(MediaType.ALL)
-                            .getType());
+                    type.getType(),
+                    type.getSubtype());
             return Mono.just(response);
         });
     }
