@@ -25,12 +25,22 @@ class JophielApiService {
                 .build();
     }
 
-    @Cacheable(key = "#jid", sync = true)
+    @Deprecated
+    @Cacheable(key = "'mono-' + #jid", sync = true)
     public Mono<User> getUserMono(String jid) {
         return client.get()
                 .uri("/api/v1/users/" + jid)
                 .retrieve()
                 .bodyToMono(User.class)
                 .cache();
+    }
+
+    @Cacheable(key = "#jid", sync = true)
+    public User getUser(String jid) {
+        return client.get()
+                .uri("/api/v1/users/" + jid)
+                .retrieve()
+                .bodyToMono(User.class)
+                .block();
     }
 }
