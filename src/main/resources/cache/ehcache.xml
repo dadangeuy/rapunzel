@@ -6,7 +6,7 @@
 
     <cache alias="jophiel">
         <expiry>
-            <ttl unit="minutes">15</ttl>
+            <ttl unit="minutes">30</ttl>
         </expiry>
         <resources>
             <heap>1000</heap>
@@ -15,7 +15,7 @@
 
     <cache alias="uriel">
         <expiry>
-            <ttl unit="minutes">5</ttl>
+            <ttl unit="minutes">1</ttl>
         </expiry>
         <resources>
             <heap>1000</heap>
