@@ -15,12 +15,12 @@
 <body>
 
 <nav class="navbar navbar-dark justify-content-between" style="background-color: #013880">
-    <a class="navbar-brand" th:href="${host}">
+    <div class="navbar-brand">
         <span th:each="logo : ${logos}">
             <img th:src="${logo}" height="30" class="d-inline-block align-top" alt="Logo">
         </span>
         <span th:text="${title}" style="margin-left: 10px"></span>
-    </a>
+    </div>
     <span class="navbar-brand">
         <small th:text="${lastUpdateTime}"></small>
     </span>
