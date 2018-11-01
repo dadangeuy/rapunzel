@@ -36,12 +36,12 @@ public class ImageProviderService {
 
     private void update(ScoreboardRow scoreboardRow) {
         String image = findImage(scoreboardRow.getContestant());
-        scoreboardRow.setLogo(image);
+        if (image != null) scoreboardRow.setLogo(image);
     }
 
     private String findImage(String name) {
         String institution = findInstitution(name);
-        return institutionImageMap.getOrDefault(institution, defaultImage);
+        return institutionImageMap.get(institution);
     }
 
     private String findInstitution(String name) {
