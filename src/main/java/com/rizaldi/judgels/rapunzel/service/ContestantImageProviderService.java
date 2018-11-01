@@ -2,6 +2,8 @@ package com.rizaldi.judgels.rapunzel.service;
 
 import com.google.common.collect.Sets;
 import com.rizaldi.judgels.rapunzel.model.judgels.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -10,6 +12,7 @@ import java.util.Set;
 
 @Service
 public class ContestantImageProviderService {
+    private static final Logger LOG = LoggerFactory.getLogger(ContestantImageProviderService.class);
     private final Map<String, Set<String>> institutionNameMap = new HashMap<String, Set<String>>() {{
         put("UI", Sets.newHashSet("BersawReborn", "ImproveBySubmission", "Kembalinya Teman Bali Kami"));
         put("UGM", Sets.newHashSet("Sayata Kid Prims Sieve"));
@@ -28,6 +31,7 @@ public class ContestantImageProviderService {
 
     public void updateProfilePicture(User user) {
         String image = findImage(user);
+        LOG.info("override {} profile picture. {} -> {}", user.getName(), user.getProfilePictureUrl(), image);
         user.setProfilePictureUrl(image);
     }
 
