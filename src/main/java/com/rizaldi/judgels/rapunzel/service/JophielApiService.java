@@ -23,23 +23,19 @@ class JophielApiService {
     private static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
     private static final JsonFactory JSON_FACTORY = new GsonFactory();
     private final String host;
-    private final ContestantImageProviderService imageProvider;
 
-    public JophielApiService(JophielConfig config, ContestantImageProviderService imageProvider) {
+    public JophielApiService(JophielConfig config) {
         host = config.getHost();
-        this.imageProvider = imageProvider;
     }
 
     @Cacheable(key = "#jid", sync = true)
     public User getUser(String jid) throws IOException {
         GenericUrl api = new GenericUrl(host + "api/v1/users/" + jid);
         LOG.info("Request: GET {}", api.toString());
-        User user = HTTP_TRANSPORT.createRequestFactory()
+        return HTTP_TRANSPORT.createRequestFactory()
                 .buildGetRequest(api)
                 .setParser(new JsonObjectParser(JSON_FACTORY))
                 .execute()
                 .parseAs(User.class);
-        imageProvider.updateProfilePicture(user);
-        return user;
     }
 }

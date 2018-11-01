@@ -1,18 +1,19 @@
 package com.rizaldi.judgels.rapunzel.service;
 
 import com.google.common.collect.Sets;
-import com.rizaldi.judgels.rapunzel.model.judgels.User;
+import com.rizaldi.judgels.rapunzel.model.ScoreboardRow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 @Service
-public class ContestantImageProviderService {
-    private static final Logger LOG = LoggerFactory.getLogger(ContestantImageProviderService.class);
+public class ImageProviderService {
+    private static final Logger LOG = LoggerFactory.getLogger(ImageProviderService.class);
     private final Map<String, Set<String>> institutionNameMap = new HashMap<String, Set<String>>() {{
         put("UI", Sets.newHashSet("BersawReborn", "ImproveBySubmission", "Kembalinya Teman Bali Kami"));
         put("UGM", Sets.newHashSet("Sayata Kid Prims Sieve"));
@@ -29,20 +30,23 @@ public class ContestantImageProviderService {
     }};
     private final String defaultImage = "https://image.ibb.co/nGB47f/INDONESIA.png";
 
-    public void updateProfilePicture(User user) {
-        String image = findImage(user);
-        LOG.info("override {} profile picture. {} -> {}", user.getName(), user.getProfilePictureUrl(), image);
-        user.setProfilePictureUrl(image);
+    public void update(List<ScoreboardRow> scoreboardRows) {
+        scoreboardRows.forEach(this::update);
     }
 
-    private String findImage(User user) {
-        String institution = findInstitution(user);
+    private void update(ScoreboardRow scoreboardRow) {
+        String image = findImage(scoreboardRow.getContestant());
+        scoreboardRow.setLogo(image);
+    }
+
+    private String findImage(String name) {
+        String institution = findInstitution(name);
         return institutionImageMap.getOrDefault(institution, defaultImage);
     }
 
-    private String findInstitution(User user) {
+    private String findInstitution(String name) {
         for (String institution : institutionNameMap.keySet()) {
-            boolean isAffiliated = institutionNameMap.get(institution).contains(user.getName());
+            boolean isAffiliated = institutionNameMap.get(institution).contains(name);
             if (isAffiliated) return institution;
         }
         return null;

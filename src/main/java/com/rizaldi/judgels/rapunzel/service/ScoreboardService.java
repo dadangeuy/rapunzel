@@ -18,11 +18,13 @@ public class ScoreboardService {
     private final ScoreboardConfig config;
     private final JophielApiService jophiel;
     private final UrielApiService uriel;
+    private final ImageProviderService imageProvider;
 
-    public ScoreboardService(ScoreboardConfig config, JophielApiService jophiel, UrielApiService uriel) {
+    public ScoreboardService(ScoreboardConfig config, JophielApiService jophiel, UrielApiService uriel, ImageProviderService imageProvider) {
         this.config = config;
         this.jophiel = jophiel;
         this.uriel = uriel;
+        this.imageProvider = imageProvider;
     }
 
     public List<String> getProblemAlias(String contestPath) throws IOException {
@@ -39,6 +41,7 @@ public class ScoreboardService {
             ScoreboardRow row = ScoreboardRow.from(entries.get(i), users.get(i));
             scoreboardRows.add(row);
         }
+        imageProvider.update(scoreboardRows);
         return scoreboardRows;
     }
 
