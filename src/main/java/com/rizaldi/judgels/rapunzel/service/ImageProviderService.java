@@ -16,7 +16,7 @@ public class ImageProviderService {
     private static final Logger LOG = LoggerFactory.getLogger(ImageProviderService.class);
     private final Map<String, Set<String>> institutionNameMap = new HashMap<String, Set<String>>() {{
         put("UI", Sets.newHashSet("BersawReborn", "ImproveBySubmission", "Kembalinya Teman Bali Kami"));
-        put("UGM", Sets.newHashSet("Sayata Kid Prims Sieve"));
+        put("UGM", Sets.newHashSet("Sayata Kid Prims Sieve", "Sayata Kid Prim's Sieve"));
         put("ITS", Sets.newHashSet("sudahbersatu"));
         put("ITB", Sets.newHashSet("Arurange Cozy Party", "Hikikomori", "I See the One", "sabeb aja namanya"));
         put("BINUS", Sets.newHashSet("Convex Coach", "JVC", "Zabivaka"));
